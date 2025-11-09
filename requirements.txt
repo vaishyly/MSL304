@@ -1,6 +1,6 @@
 streamlit
 pandas
 numpy
-matplotlib
+scikit-learn
 ortools
-reportlab
+plotly
