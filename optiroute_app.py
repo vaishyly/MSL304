@@ -218,7 +218,7 @@ def compute_kpis(routes_all, cluster_caps, fuel_cost_per_km, emission_factor, al
 
 st.set_page_config(page_title="OptiRoute — VRP (Multi-objective + Time Windows)", layout="wide")
 st.title("OptiRoute — Multi-objective VRP (Cost, Emissions, Time Windows & KPI Dashboard)")
-st.markdown("Team: Vaishali Anand, Vipul Yadav, Kundan, Arpit Agrawal — IIT Delhi, MSL304")
+st.markdown("Team: Vaishali Anand, Arpit Agrawal, Vipul Yadav — IIT Delhi, MSL304")
 
 # Sidebar: Demo options, weights, cost/emission params, CSV upload
 st.sidebar.header("Demo / Data options")
@@ -275,7 +275,7 @@ if uploaded is not None:
         st.sidebar.error(f"Failed to parse CSV: {e}")
 
 # Editable nodes table
-st.subheader("1) Locations, Demands & Time Windows (editable)")
+st.subheader("1) Locations, Demands & Time Windows")
 df_nodes = st.data_editor(st.session_state['base_df'], num_rows="dynamic", key="nodes_editor")
 
 # Validate id/depot
