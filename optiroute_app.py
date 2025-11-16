@@ -591,4 +591,50 @@ if run_pipeline:
                     for j_local, j_global in enumerate(local_indices):
                         local_mat[i_local,j_local] = int(dist_s[i_global, j_global])
                 cap = cluster_caps[v] if v < len(cluster_caps) else cluster_caps[-1]
-                _, metrics_tmp = solve_vrp_ortools(local_mat, local_dem, local_serv, local_tw, cap,
+                                _, metrics_tmp = solve_vrp_ortools(
+                    local_mat,
+                    local_dem,
+                    local_serv,
+                    local_tw,
+                    cap,
+                    weighted_cost_factor=weighted_cost_factor,
+                    penalty=10000,
+                    time_limit=2
+                )
+
+                routes_info_temp.append({"metrics": metrics_tmp})
+
+            # Compute KPIs for this sample
+            kpi_tmp = compute_kpis(
+                routes_info_temp,
+                cluster_caps,
+                fuel_cost_per_km,
+                emission_factor,
+                alpha,
+                beta,
+                gamma
+            )
+
+            sample_totals.append(kpi_tmp["total_distance"])
+
+        # Convert to numpy for charting
+        sample_arr = np.array(sample_totals)
+        pct_change = (
+            (sample_arr - base_total) / base_total * 100
+            if base_total > 0 else np.zeros_like(sample_arr)
+        )
+
+        # Plot sensitivity
+        st.line_chart(
+            pd.DataFrame({
+                "Total distance samples": sample_arr,
+                "Pct change vs base": pct_change
+            })
+        )
+
+        st.write(
+            "Sensitivity summary:",
+            f"Mean % change = {pct_change.mean():.2f}",
+            f"Std = {pct_change.std():.2f}"
+        )
+
